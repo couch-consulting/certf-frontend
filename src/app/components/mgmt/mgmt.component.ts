@@ -1,8 +1,29 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {PreviewCertfMgmt} from '../../classes/preview-certf_mgmt';
 import {CertfdataService} from '../../services/certfdata.service';
-import {Observable} from "rxjs/Observable";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
+import {Observable} from 'rxjs/Observable';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+
+
+/**
+ * Dialog Window Component
+ */
+@Component({
+  selector: 'app-dialog-create',
+  templateUrl: 'dialogCreate.html',
+})
+export class DialogCreateComponent {
+
+  constructor(public dialogRef: MatDialogRef<DialogCreateComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
 
 @Component({
   selector: 'app-mgmt',
@@ -21,11 +42,11 @@ export class MgmtComponent implements OnInit {
   }
 
   ngOnInit() {
-    //Get all Certfs
+    // Get all Certfs
     this.previewCertfsMgmt = this.certfdataService.getCertfsMgmt();
 
     this.loading2 = false;
-    //response object
+    // response object
     this.postBody = {};
     this.previewCertfMgmt = <PreviewCertfMgmt>{};
     this.previewCertfMgmt['name'] = '';
@@ -41,27 +62,27 @@ export class MgmtComponent implements OnInit {
    * Change Dialog Window Opener
    */
   openDialog_create(): void {
-    let dialogRef = this.dialog.open(DialogCreate, {
+    const dialogRef = this.dialog.open(DialogCreateComponent, {
       width: '75%',
       data: {previewCertfMgmt: this.previewCertfMgmt}
     });
 
     dialogRef.afterClosed().subscribe(
       result => this.result = result,
-      error => console.log("Error: ", error),
-      () => this.postCertfData(this.result));
+      error => console.log('Error: ', error),
+      () => this.postCertfData());
   }
 
   /**
    * Create certf
    */
-  postCertfData(postBody) {
+  postCertfData() {
     if (typeof this.result !== 'undefined' && this.result.name !== '' && this.result.description !== '' && this.result.inputFields !== []
       && this.result.previewHTML !== '') {
       this.postBody['name'] = this.result.name;
       this.postBody['description'] = this.result.description;
 
-      this.postBody['inputFields'] = this.result.inputFields.toString().replace(/ /g, '').split(",");
+      this.postBody['inputFields'] = this.result.inputFields.toString().replace(/ /g, '').split(',');
 
       this.postBody['previewHTML'] = this.result.previewHTML;
       this.postBody['previewImage'] = this.result.previewImage;
@@ -72,7 +93,7 @@ export class MgmtComponent implements OnInit {
       this.certfdataService.postCertfMgmt(this.postBody).subscribe(
         p => p,
         error => {
-          console.log("Error: ", error);
+          console.log('Error: ', error);
           this.loading2 = false;
         },
         () => this.reload());
@@ -91,22 +112,3 @@ export class MgmtComponent implements OnInit {
 
 }
 
-
-/**
- * Dialog Window Component
- */
-@Component({
-  selector: 'dialogCreate',
-  templateUrl: 'dialogCreate.html',
-})
-export class DialogCreate {
-
-  constructor(public dialogRef: MatDialogRef<DialogCreate>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
-import {CertfdataService} from "../../services/certfdata.service";
-import {PreviewCertf} from "../../classes/preview-certf";
+import {CertfdataService} from '../../services/certfdata.service';
+import {PreviewCertf} from '../../classes/preview-certf';
 import {FormControl, Validators} from '@angular/forms';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -50,14 +50,14 @@ export class SelectedComponent implements OnInit {
     this.userInput = {};
     this.loading2 = false;
     this.pdf = false;
-    this.apiurl = "https://certification-api.eu-de.mybluemix.net";
+    this.apiurl = 'https://certification-api.eu-de.mybluemix.net';
 
     this.certifierCtrl = new FormControl('', [Validators.required]);
     this.certificantCtrl = new FormControl('', [Validators.required]);
     this.laudatioCtrl = new FormControl('', [Validators.required]);
 
-    //let reg = /([0]?[1-9]|[1][0-2])\/([0]?[1-9]|[1-2][0-9]|[3][0-1])\/[0-9]{4}/g;
-    //Does not work via Validator: Date Validators.pattern('([0]?[1-9]|[1][0-2])\\/([0]?[1-9]|[1-2][0-9]|[3][0-1])\\/[0-9]{4}$')
+    // let reg = /([0]?[1-9]|[1][0-2])\/([0]?[1-9]|[1-2][0-9]|[3][0-1])\/[0-9]{4}/g;
+    // Does not work via Validator: Date Validators.pattern('([0]?[1-9]|[1][0-2])\\/([0]?[1-9]|[1-2][0-9]|[3][0-1])\\/[0-9]{4}$')
 
 
   }
@@ -70,7 +70,7 @@ export class SelectedComponent implements OnInit {
     const templateId = this.route.snapshot.paramMap.get('templateId');
 
     this.previewCertfObs = this.certfdataService.getCertf(templateId);
-    return this.previewCertfObs
+    return this.previewCertfObs;
 
   }
 
@@ -82,7 +82,7 @@ export class SelectedComponent implements OnInit {
     this.previewCertf = previewCertf;
     this.previewCertf.inputFields.forEach((input) => {
       this.additionalInputs[input] = '';
-    })
+    });
   }
 
   /**
@@ -132,23 +132,23 @@ export class SelectedComponent implements OnInit {
 
   generateCertf(): void {
 
-    //additonal check if values are not none
+    // additonal check if values are not none
     if (this.certifier !== '' && this.certificant !== '' && this.laudatio !== '') {
-      this.userInput["templateId"] = this.previewCertf.templateId;
-      this.userInput["certifier"] = this.certifier;
+      this.userInput['templateId'] = this.previewCertf.templateId;
+      this.userInput['certifier'] = this.certifier;
 
-      this.userInput["certificant"] = this.certificant;
+      this.userInput['certificant'] = this.certificant;
 
-      this.userInput["laudatio"] = this.laudatio;
-      this.userInput["certificationDate"] = this.certificationDate;
-      this.userInput["certificationPlace"] = this.certificationPlace;
-      this.userInput["additionalInputs"] = this.additionalInputs;
+      this.userInput['laudatio'] = this.laudatio;
+      this.userInput['certificationDate'] = this.certificationDate;
+      this.userInput['certificationPlace'] = this.certificationPlace;
+      this.userInput['additionalInputs'] = this.additionalInputs;
       this.loading2 = true;
-      //post input data to server, creates templetid object
+      // post input data to server, creates templetid object
       this.certfdataService.postCertf(this.userInput).subscribe(
         newTempletId => this.newTempletId = newTempletId,
         error => {
-          console.log("Error: ", error);
+          console.log('Error: ', error);
           this.loading2 = false;
         },
         () => this.completeCallback());
@@ -166,7 +166,7 @@ export class SelectedComponent implements OnInit {
     this.certfdataService.postGenCertf(this.newTempletId['taskId']).subscribe(
       p => p,
       error => {
-        console.log("Error: ", error);
+        console.log('Error: ', error);
         this.loading2 = false;
       },
       () => {
@@ -183,7 +183,7 @@ export class SelectedComponent implements OnInit {
    * Opens PDF in new Window
    */
   openPDF() {
-    window.open(this.apiurl + "/certify/" + this.newTempletId['taskId'], "_blank");
+    window.open(this.apiurl + '/certify/' + this.newTempletId['taskId'], '_blank');
   }
 }
 

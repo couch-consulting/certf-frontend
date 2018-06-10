@@ -2,15 +2,36 @@ import {Component, Inject, Injectable} from '@angular/core';
 import {PreviewCertf} from '../classes/preview-certf';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, retry} from 'rxjs/operators';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
-import {PreviewCertfMgmt} from "../classes/preview-certf_mgmt";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {PreviewCertfMgmt} from '../classes/preview-certf_mgmt';
 
-//HTTP Header Options for Put and POST
+// HTTP Header Options for Put and POST
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
+
+/**
+ * Dialog Window Component for Errors
+ */
+@Component({
+  selector: 'app-dialog-http-error',
+  templateUrl: 'dialogHTTPError.html',
+})
+export class DialogHTTPErrorComponent {
+
+  constructor(public dialogRef: MatDialogRef<DialogHTTPErrorComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
 
 @Injectable()
 export class CertfdataService {
@@ -72,13 +93,13 @@ export class CertfdataService {
    * Error MSG Dialog Window Opener
    */
   openDialog(): void {
-    let dialogRef = this.dialog.open(DialogHTTPError, {
+    const dialogRef = this.dialog.open(DialogHTTPErrorComponent, {
       width: '250px',
       data: {errorMSG: this.errorMSG}
     });
   }
 
-  //Mgmt Stuff
+  // Mgmt Stuff
   /** MANAGEMET
    * Get Request for an array of all certfs
    * @returns {Observable<PreviewCertfMgmt[]>}
@@ -144,9 +165,9 @@ export class CertfdataService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: HttpErrorResponse): Observable<T> => {
-      //workaround for put error problem
+      // workaround for put error problem
       if (error.status === 200) {
-        return of(result as T)
+        return of(result as T);
       }
 
       console.log(`${operation} failed!`);
@@ -158,28 +179,9 @@ export class CertfdataService {
           `body was: ${error.error}`);
       }
       this.openDialog();
-      return of(result as T)
-    }
+      return of(result as T);
+    };
 
-  }
-
-}
-
-/**
- * Dialog Window Component for Errors
- */
-@Component({
-  selector: 'dialogHTTPError',
-  templateUrl: 'dialogHTTPError.html',
-})
-export class DialogHTTPError {
-
-  constructor(public dialogRef: MatDialogRef<DialogHTTPError>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
 }

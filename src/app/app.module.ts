@@ -8,12 +8,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ContentCardsComponent} from './content-cards/content-cards.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {AppRoutingModule} from './app-routing.module';
-import {CertfdataService, DialogHTTPError} from './services/certfdata.service';
+import {CertfdataService, DialogHTTPErrorComponent} from './services/certfdata.service';
 import {HomeComponent} from './components/home/home.component';
 import {SelectedComponent} from './components/selected/selected.component';
-import {HttpClientModule} from "@angular/common/http";
-import {DialogCreate, MgmtComponent} from './components/mgmt/mgmt.component';
-import {ChangeComponent, DialogChange, DialogDelete, PutSnackBar} from './components/mgmt/change/change.component';
+import {HttpClientModule} from '@angular/common/http';
+import {DialogCreateComponent, MgmtComponent} from './components/mgmt/mgmt.component';
+import {ChangeComponent, DialogChangeComponent,
+  DialogDeleteComponent, PutSnackBarComponent} from './components/mgmt/change/change.component';
+
+import {SafeHtml} from './image-pipe';
 
 
 @NgModule({
@@ -22,13 +25,14 @@ import {ChangeComponent, DialogChange, DialogDelete, PutSnackBar} from './compon
     ContentCardsComponent,
     HomeComponent,
     SelectedComponent,
-    DialogHTTPError,
+    DialogHTTPErrorComponent,
     MgmtComponent,
     ChangeComponent,
-    DialogChange,
-    DialogCreate,
-    DialogDelete,
-    PutSnackBar
+    DialogChangeComponent,
+    DialogCreateComponent,
+    DialogDeleteComponent,
+    PutSnackBarComponent,
+    SafeHtml
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,7 @@ import {ChangeComponent, DialogChange, DialogDelete, PutSnackBar} from './compon
     ReactiveFormsModule,
     HttpClientModule
   ],
-  entryComponents: [DialogHTTPError, DialogChange, PutSnackBar, DialogCreate, DialogDelete],
+  entryComponents: [DialogHTTPErrorComponent, DialogChangeComponent, PutSnackBarComponent, DialogCreateComponent, DialogDeleteComponent],
   providers: [CertfdataService],
   bootstrap: [AppComponent]
 })
