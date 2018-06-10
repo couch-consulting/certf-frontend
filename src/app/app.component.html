@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar-row>
+    <span class="title">{{title}}</span>
+
+    <span class="example-spacer"></span>
+
+    <button routerLink="management" mat-button>Mgmt</button>
+
+    <button routerLink="/" mat-icon-button>
+      <mat-icon>home</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

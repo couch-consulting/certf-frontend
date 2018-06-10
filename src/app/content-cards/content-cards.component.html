@@ -1,0 +1,32 @@
+<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly center"
+     *ngIf="previewCertfs | async; let previewCertfs; else loading"
+>
+    <mat-card fxFlex class="start-card" *ngFor="let previewCertf of previewCertfs">
+
+      <mat-card-header>
+        <mat-card-title class="mat-card-title">{{previewCertf.name}}</mat-card-title>
+      </mat-card-header>
+
+      <img mat-card-image src={{previewCertf.previewImage}} alt="Image of certificate">
+
+
+      <mat-card-content>
+        <div class="card-text-content">
+          {{previewCertf.description}}
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions fxLayoutAlign="space-evenly center">
+        <button mat-raised-button class="button" color="primary" routerLink="/selected/{{previewCertf.templateId}}" fxFlex>Use this!</button>
+      </mat-card-actions>
+
+    </mat-card>
+</div>
+
+<ng-template #loading>
+  <mat-progress-spinner style="margin:auto;"
+                        color="accent"
+                        mode="indeterminate">
+  </mat-progress-spinner>
+</ng-template>
+
