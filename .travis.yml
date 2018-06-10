@@ -19,3 +19,4 @@ deploy:
   buildpack: https://github.com/cloudfoundry/staticfile-buildpack
   on:
     branch: master
+
