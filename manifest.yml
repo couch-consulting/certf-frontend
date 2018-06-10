@@ -1,0 +1,10 @@
+---
+applications:
+- name: certf-frontend
+  memory: 64M
+  instances: 1
+  host: certf-frontend
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack
+  path: dist/
+  env:
+    FORCE_HTTPS: true
